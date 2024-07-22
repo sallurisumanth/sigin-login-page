@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'you-will-never-guess')
@@ -32,39 +33,49 @@ def index():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        data = request.form
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
         
         if password != confirm_password:
             flash('Passwords do not match!', 'danger')
-        elif User.query.filter_by(email=email).first() or User.query.filter_by(username=username).first():
-            flash('Email or Username already exists!', 'danger')
+        elif len(password) < 8 or not re.search(r'[a-z]', password) or not re.search(r'[A-Z]', password) or not re.search(r'\d$', password):
+            flash('Password must be at least 8 characters long, contain a lowercase letter, an uppercase letter, and end with a number.', 'danger')
+        elif User.query.filter_by(email=email).first():
+            flash('Email Address already exists!', 'danger')
+        elif User.query.filter_by(username=username).first():
+            flash('Username already exists!', 'danger')
         else:
             user = User(
-                first_name=request.form.get('first_name'),
-                last_name=request.form.get('last_name'),
+                first_name=data.get('first_name'),
+                last_name=data.get('last_name'),
                 username=username,
                 email=email
             )
             user.set_password(password)
             db.session.add(user)
             db.session.commit()
-            flash('Registration successful!', 'success')
             return redirect(url_for('thankyou'))
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Clear flash messages before rendering
+    get_flashed_messages()
+
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+
         user = User.query.filter_by(username=username).first()
+        
         if user and user.check_password(password):
             flash('Login successful!', 'success')
             return redirect(url_for('secretPage'))
-        flash('Invalid username or password.', 'danger')
+        flash('Invalid username or password. Please try again.', 'danger')
+
     return render_template('login.html')
 
 @app.route('/secretPage')

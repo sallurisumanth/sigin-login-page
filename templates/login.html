@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color:  #f0f8ff;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,18 +15,21 @@
             height: 100vh;
             color: #333;
         }
+
         .container {
             max-width: 500px;
-            margin: 20px;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
         h1 {
             color: #343a40;
+            margin-bottom: 20px;
         }
+
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -36,39 +39,53 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         button {
             width: 100%;
             padding: 10px;
             border: none;
             border-radius: 4px;
             background-color: #007bff;
-            color: #fff;
+            color: #ffffff;
             font-size: 16px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .flash-message {
-            margin: 10px 0;
+            margin-bottom: 20px;
             padding: 10px;
             border-radius: 4px;
         }
-        .flash-message.success {
+
+        .flash-message p {
+            margin: 0;
+            padding: 10px;
+            color: #ffffff;
+            border-radius: 4px;
+        }
+
+        .flash-message .success {
             background-color: #28a745;
-            color: #fff;
         }
-        .flash-message.danger {
+
+        .flash-message .danger {
             background-color: #dc3545;
-            color: #fff;
         }
+
         .footer {
+            text-align: center;
             margin-top: 20px;
         }
+
         .footer a {
             color: #007bff;
             text-decoration: none;
         }
+
         .footer a:hover {
             text-decoration: underline;
         }
@@ -76,13 +93,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h1>Login to Your Account</h1>
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
+          {% if messages %}
+            <div class="flash-message">
+              {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
         {% endwith %}
         <form method="POST">
             <input type="text" name="username" placeholder="Username" required>
