@@ -1,38 +1,95 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to right, #e3f2fd, #bbdefb);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .App {
   text-align: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  color: #007BFF;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  animation: fadeInDown 1s ease-in-out;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+input, button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 10px;
+  font-size: 1em;
+}
+input:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+button {
+  background: linear-gradient(45deg, #28a745, #218838);
   color: white;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
-
-.App-link {
-  color: #61dafb;
+button:hover {
+  background: linear-gradient(45deg, #218838, #1e7e34);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(33, 136, 56, 0.5);
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+ul {
+  list-style: none;
+  padding: 0;
+  max-width: 400px;
+  margin: 20px auto;
+  animation: fadeInUp 1s ease-in-out;
 }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+li {
+  margin: 10px 0;
+  padding: 10px;
+  background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+li:hover {
+  background: linear-gradient(45deg, #e9ecef, #dee2e6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+li div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+li div input {
+  margin-right: 10px;
+  flex-grow: 1;
+  padding: 5px;
+}
+li div button {
+  padding: 5px 10px;
+  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+}
+li div button.edit::before { content: '✏️'; }
+li div button.delete::before { content: '❌'; }
